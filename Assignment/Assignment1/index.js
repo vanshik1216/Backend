@@ -12,9 +12,9 @@ const fs=require("fs");
 process.argv.shift();
 process.argv.shift();
 // let str=process.argv.toString();//aise vha , ara haii toh hum comma ko replace krdege hum un data ko nextline se krre h
-let str=process.argv.toString().replace(",","\n");
+let str=process.argv.toString().replace(/,/g,"\n");
 
 fs.writeFile("../assign1.txt",str,function(err,data){
-    if(err)return console.log(err)
-        console.log("File created with given str");
+    if(err)return console.log(err);
+        console.log("File create8 with given str");
 })
