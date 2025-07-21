@@ -35,7 +35,7 @@ function isAllowed(id){
         if(isid.age<18)return reject("Not eligible to vote")
             return resolve("eligible to vote")
     })
-    
+    c
 }
 isAllowed(1).then((data)=>{
     console.log(data)
