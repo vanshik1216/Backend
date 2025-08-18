@@ -115,18 +115,17 @@ if(!blogexist)
   message:"blog doesnt exist"
   })
   if(blogexist.userId!=userId)
-    res.json({
+    return res.json({
       success:false,
       message:"you are not allowed to delete this blog"
     })
   let update=await Blogs.findByIdAndUpdate(blogId,{title,body})
   // await Blogs.save();
-  res.json({
+  return res.json({
     success:true,
     message:"updated",
 data:update
-  }
-  )
+  })
 })
 app.listen(3000,()=>{
   console.log("Server started");
