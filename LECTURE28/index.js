@@ -147,3 +147,22 @@ updatemany()
 .then((data)=>{
     console.log(data)
 })
+
+//upsert-- function used to update existing data and if it doesnt exist so create
+// await prisma.user.upsert({
+//     where: {
+//       email: 'viola@prisma.io',
+//     },
+//     update: {
+//       name: 'Viola the Magnificent',
+//     },
+//     create: {
+//       email: 'viola@prisma.io',
+//       name: 'Viola the Magnificent',
+//     },
+//   })
+//delete for single record-- delete method
+//multiple -deleteMany()
+//byfilter--deleteMany({
+// where})
+//by deleet all data-- deleteMany({})
