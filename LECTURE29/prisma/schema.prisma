@@ -25,6 +25,6 @@ model Tweet{
   id Int  @id @default(autoincrement())
   content String
   userId Int
-  user  User  @relation(fields: [userId], references: [id])  //one to one 
+  user  User  @relation(fields: [userId], references: [id] ,onDelete: Cascade)  //one to one 
   //fields meim foreign key and references mein primary key user table kaa 
 }

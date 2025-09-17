@@ -18,8 +18,15 @@ module.exports.addUser = async (req, res) => {
 //GET ALL USER
 module.exports.getUsers = async (req, res) => {
     let Users = await prisma.user.findMany({
-        include: {
-            tweet: true
+       
+        select:{
+            name:true,
+            email:true,
+            tweet:{
+                select:{
+                    content:true
+                }
+            }
         }
     })
     if (!Users) {
@@ -41,8 +48,17 @@ module.exports.getUser = async (req, res) => {
         where: {
             id: Number(id)
         },
-        include: {
-            tweet: true
+        // include: {
+        //     tweet: true
+        // },
+        select:{
+            name:true,
+            email:true,
+            tweet:{
+                select:{
+                    content:true
+                }
+            }
         }
     })
     if (!user) {
@@ -57,7 +73,7 @@ module.exports.getUser = async (req, res) => {
         data: user
     })
 }
-//Update User by id
+//Delete User by id
 module.exports.deleteUser = async (req, res) => {
     const { id } = req.params
     const user = await prisma.user.findUnique({
@@ -82,7 +98,6 @@ module.exports.deleteUser = async (req, res) => {
 
     })
 }
-//DElete User
 module.exports.updateUser = async (req, res) => {
     const { id } = req.params
     let { ...updateData } = req.body;
