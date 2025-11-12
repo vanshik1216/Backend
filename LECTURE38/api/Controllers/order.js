@@ -1,6 +1,6 @@
 const OrderBook=require("../service/orderService")
 let {publisher}=require("../../shared/index")
-let ob=new OrderBook("BTCUSD");//globalObject
+let ob=new OrderBook("BTCUSD");//globalObject-problem kyuki yeh sirf ek symbol market m chljega baki m nhiii 
 module.exports.postPlaceOrder=async(req,res)=>{
     //to create a new order for user who is placing an order
     let {side,type,price,quantity,user}=req.body
@@ -15,4 +15,13 @@ module.exports.postPlaceOrder=async(req,res)=>{
         }
     })
     // console.log(response)
+}
+module.exports.getOrderBook=async(req,res)=>{
+    let bookSnapShot=ob.getBookSnapShot();
+    return res.json(bookSnapShot)
+}
+module.exports.getRecentTrade=async(req,res)=>{
+    let {limit}=req.query;
+    let recentTrade=ob.getRecentTrades(limit);
+    return res.json(recentTrade)
 }

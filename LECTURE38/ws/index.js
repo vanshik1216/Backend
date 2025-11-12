@@ -1,29 +1,25 @@
-const {WebSocketServer}=require('ws')
-let { subscriber}=require('../shared/index')
-const wss=new WebSocketServer({port:8080});
+const WebSocket = require("ws");
+let{subscriber, publisher}=require("../shared/index");
+const wss = new WebSocket.Server({ port: 8080 });
 let allSocket=[];
-wss.on("connection",(socket)=>{
-    console.log("user connected")
-   
-    allSocket.push(socket)
-    (async function orderbookUpdate(){
-        await subscriber.connect();
-  subscriber.subscribe("bookupdate",(message)=>{
-         //broadcasting
-         let parsedMessage=JSON.parse(message)
-         console.log(parsedMessage)
-         })
-     })()//IIFE--immediately invoking function
+
+wss.on("connection", (ws) => {
+  console.log("New client connected!");
+  allSocket.push(ws);
+  (async function orderBookUpdate(){
+    await subscriber.connect();
+        await subscriber.subscribe("bookupdate", (message)=>{
+            let parsedMsg=JSON.parse(message);
+            console.log(parsedMsg);
+            broadcast(parsedMsg);
+        })
+})()  // IIFE-Immediately invoking function
 })
-// (async function orderbookUpdate(){
-//    await subscriber.subscribe("bookupdate",(message)=>{
-//     //broadcasting
-//     let parsedMessage=JSON.parse(message)
-//     console.log(parsedMessage)
-//     })
-// })()//IIFE--immediately invoking function
-function broadcast(){
-    allSocket.forEach((s)=>{
-        s.send(message)
-    })
+
+
+function broadcast(message){
+    allSocket.forEach((s) => {
+        let data=JSON.stringify(message);
+        s.send(data);
+    });
 }

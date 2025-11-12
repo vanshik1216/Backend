@@ -4,7 +4,8 @@ class OrderBook{
         this.bids=[],
         this.ask=[],
         this._nextId=1,
-        this.lastTradedPrice=null
+        this.lastTradedPrice=null,
+        this.trades=[]
     }
 
     _genOrderId(){
@@ -79,6 +80,14 @@ class OrderBook{
             let top=askArr[0];
             while(order.remainQty>0&&askArr.length>0){
                 let orderFill=Math.min(order.remainQty,top.remainQty);
+                if(orderFill>0){
+                    this.lastTradedPrice=top.price
+                    this.trades.unshift({
+                        id:Math.floor(Math.random()*1000000),
+                        quantity:orderFill,
+                        price:top.price
+                    })
+                }
                 order.exectQty=order.exectQty+orderFill;
                 order.remainQty=order.remainQty-orderFill;
                 top.exectQty=top.exectQty+orderFill;
@@ -94,6 +103,14 @@ class OrderBook{
             let top=askArr[0];
             while(order.remainQty>0&&bidArr.length>0){
                 let ordercomp=Math.min(order.remainQty,top.remainQty);
+                if(ordercomp>0){
+                    this.lastTradedPrice=top.price
+                    this.trades.unshift({
+                        id:Math.floor(Math.random()*1000000),
+                        quantity:ordercomp,
+                        price:top.price
+                    })
+                }
                 order.remainQty-=ordercomp;
                 order.exectQty+=ordercomp;
                 top.remainQty-=ordercomp;
@@ -111,6 +128,14 @@ class OrderBook{
                 let top=opp[0];
                 if(order.price>=top.price){
                     let filledOrder=Math.min(order.remainQty,top.remainQty);
+                    if(filledOrder>0){
+                        this.lastTradedPrice=top.price
+                        this.trades.unshift({
+                            id:Math.floor(Math.random()*1000000),
+                            quantity:filledOrder,
+                            price:top.price
+                        })
+                    }
                     order.exectQty=order.exectQty+orderFill;
                 order.remainQty=order.remainQty-orderFill;
                 top.exectQty=top.exectQty+orderFill;
@@ -132,6 +157,14 @@ class OrderBook{
             let top=opp[0];
             if(order.price<=top.price){
               let ordercomp=Math.min(order.remainQty,top.remainQty);
+              if(ordercomp>0){
+                this.lastTradedPrice=top.price
+                this.trades.unshift({
+                    id:Math.floor(Math.random()*1000000),
+                    quantity:ordercomp,
+                    price:top.price
+                })
+            }
               order.remainQty-=ordercomp;
               order.exectQty+=ordercomp;
               top.remainQty-=ordercomp;
@@ -154,6 +187,9 @@ class OrderBook{
             bids:this.bids.map((o)=>[o.price,o.remainQty]),
             ask:this.ask.map((o)=>[o.price,o.remainQty])
         }
+    }
+    getRecentTrades(limit){
+        return this.trades.slice(0,limit);
     }
 }
 
