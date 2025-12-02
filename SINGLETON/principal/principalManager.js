@@ -1,0 +1,3 @@
+class PrincipalManager{
+    principalManager=null
+}
